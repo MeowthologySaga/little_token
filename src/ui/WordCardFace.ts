@@ -134,6 +134,8 @@ function wordCardNoteHtml(word: Word, note: string): string {
 }
 
 export interface WordCardFaceOpts {
+  /** 포크 개념 카드: 성분/잉크 대신 현재 위치의 활용을 표시한다. */
+  concept?: { glyph: string; badge: string }
   /** 선택 불가 사유처럼 카드 문구를 갈아 끼울 때 쓴다. 기본은 단어의 note. */
   note?: string
   /** 일러스트 없는 카드 하단의 작은 글자. */
@@ -152,6 +154,16 @@ export interface WordCardFaceOpts {
 export function wordCardFrontHtml(word: Word, opts: WordCardFaceOpts = {}): string {
   const { note = wordNoteText(word), footer = 'WORD CARD', overlay = '', hideMeta = false, hideEmotion = false } = opts
   const artUrl = opts.artUrl ?? (word.art ? SKILL_ART[word.art] : undefined)
+  if (opts.concept) {
+    return `<span class="card-face card-front concept-front">
+      ${artUrl ? `<img class="concept-illustration" src="${artUrl}" alt="" />` : ''}
+      <span class="concept-glyph" aria-hidden="true">${opts.concept.glyph}</span>
+      <span class="concept-badge">${opts.concept.badge}</span>
+      <strong class="concept-name">${word.text}</strong>
+      <span class="concept-note" title="${escapeCardText(note)}">${note}</span>
+      ${overlay}
+    </span>`
+  }
   const emotion = emotionOrNeutral(word.emotion)
   const inkCost = wordInkCost(word)
   const inkCostStyle = `style="--ink-cost-badge-image:url('${INK_UI.costBadge}')"`

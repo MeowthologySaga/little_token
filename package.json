@@ -1,6 +1,6 @@
 {
   "name": "diary-word-battle",
-  "version": "0.14.6",
+  "version": "0.17.3",
   "description": "그림일기 단어 조립 전투 — a picture-diary sentence-combat roguelite",
   "type": "module",
   "engines": {
@@ -29,6 +29,7 @@
     "web:serve": "vite preview --host 127.0.0.1 --port 8000",
     "web:package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-web-build.ps1",
     "type-check": "npm run data:generate && tsc --noEmit",
+    "steering:check": "tsx src/tools/steering-check.ts",
     "sweep": "npm run data:generate && tsx src/tools/sweep.ts",
     "locale:check": "npm run data:generate && tsx src/tools/locale-check.ts",
     "check": "npm run data:generate && tsx src/tools/check-tables.ts",
@@ -42,7 +43,9 @@
     "release:check": "tsx scripts/release-check.ts",
     "test": "npm run type-check && npm run sweep && npm run check && npm run locale:check && npm run effects:check && npm run core:check && npm run emotion:check && npm run items:check && npm run characters:check && npm run experience:check && npm run mind:check && npm run policy:sim && npm run boss:sim && npm run balance:check",
     "mind:check": "npm run data:generate && tsx src/tools/token-mind-check.ts",
-    "policy:sim": "npm run data:generate && tsx src/tools/token-policy-sim.ts"
+    "policy:sim": "npm run data:generate && tsx src/tools/token-policy-sim.ts",
+    "integrated:check": "tsx src/tools/integrated-steering-check.ts",
+    "integrated:sim": "tsx src/tools/integrated-opening-sim.ts"
   },
   "devDependencies": {
     "@types/howler": "^2.2.13",

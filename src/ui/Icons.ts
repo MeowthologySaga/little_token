@@ -47,6 +47,9 @@ export const icon = (key: string): string => {
         <path d="M27 12l12 12-12 12" fill="currentColor" fill-opacity="0.16"/></svg>`
     case 'close':
       return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M14 14l20 20M34 14L14 34"/></svg>`
+    case 'audio':
+    case 'audio-off':
+      return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 18h8l10-9v30L16 30H8z"/>${key === 'audio' ? '<path d="M33 16q9 8 0 16M38 9q15 15 0 30"/>' : '<path d="m33 18 10 12m0-12L33 30"/>'}</svg>`
     case 'settings':
       return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round">
         <circle cx="24" cy="24" r="7" fill="currentColor" fill-opacity="0.16"/>

@@ -1,6 +1,7 @@
 import { BACKGROUNDS, SPRITES, TOKEN_FACES } from '@/assets'
 
 interface Opts {
+  completedRun?: boolean
   onComplete: () => void
 }
 
@@ -60,7 +61,7 @@ export class EndingView {
   }
 
   private render() {
-    const cut = CUTS[this.index]
+    const cut = this.opts.completedRun && this.index === CUTS.length - 1 ? { ...CUTS[this.index], kicker: '한 권의 끝', title: '이야기를 지켜 냈어.', body: '15층의 이야기를 마쳤습니다. 수집한 개념과 아이템을 기록하고 새 일기를 시작할 수 있습니다.' } : CUTS[this.index]
     const panel = this.root.querySelector<HTMLElement>('.ending-cut')!
     panel.className = `ending-cut tone-${cut.tone}`
     panel.innerHTML = `
@@ -69,7 +70,7 @@ export class EndingView {
         <div class="ending-kicker">${cut.kicker}</div>
         <h1 class="hand">${cut.title}</h1>
         <p>${cut.body}</p>
-        <button type="button" class="ending-next">${this.index === CUTS.length - 1 ? '엔드리스 모드 시작' : '다음 장'}</button>
+        <button type="button" class="ending-next">${this.index === CUTS.length - 1 ? this.opts.completedRun ? '런 결과 보기' : '엔드리스 모드 시작' : '다음 장'}</button>
       </article>`
     this.root.querySelector('.ending-progress')!.innerHTML = CUTS.map(
       (_, index) => `<i${index === this.index ? ' class="on"' : ''}></i>`,

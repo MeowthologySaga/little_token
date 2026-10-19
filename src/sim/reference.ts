@@ -969,7 +969,7 @@ export function enemyAttackForecast(
   }
 }
 
-export function enemyTurn(state: BattleState, rng: () => number, phase: 'first' | 'second'): EnemyStrike[] {
+export function enemyTurn(state: BattleState, rng: () => number, phase: 'first' | 'second', transformRaw: (raw: number) => number = raw => raw, adjudicate: typeof enemyAttackDefense = enemyAttackDefense): EnemyStrike[] {
   const strikes: EnemyStrike[] = []
   const front = frontIdx(state)
   if (front < 0) return strikes
@@ -988,10 +988,10 @@ export function enemyTurn(state: BattleState, rng: () => number, phase: 'first' 
   const escorts = summonCount(enemy)
   const summonAttackBonus = escorts * (summonPattern?.attackBonusPerUnit ?? 0)
   const summonsReleased = summonPattern?.releaseAt != null && escorts >= summonPattern.releaseAt ? escorts : 0
-  const raw = enemyAttackDamageForRoll(state, enemy, Math.floor(rng() * 3))
+  const raw = Math.max(0, Math.round(transformRaw(enemyAttackDamageForRoll(state, enemy, Math.floor(rng() * 3)))))
   // 모여든 호위가 한꺼번에 돌격하면 방패 위로 넘어 들어온다. 화면 예상과 같은
   // 순수 판정을 먼저 읽고, 이 실행부에서만 체력과 방어 상태를 실제로 바꾼다.
-  const defense = enemyAttackDefense(state, enemy, raw)
+  const defense = adjudicate(state, enemy, raw)
   const {
     dealt,
     absorbed,

@@ -1,4 +1,14 @@
+> **v0.17.0 기본 게임:** 원본 타이틀로 진입하는 한국어 빈칸 통합판입니다. 주어/수식/목적어/행동,
+> 공용 손패 6장, 턴당 잉크 2의 고정 칸 수정, 동시 다중 적 전투와 원본 아이템/보스/엔딩을 연결합니다.
+> `?mode=classic`은 아래 원본 소개의 여섯 언어/슬롯/엔드리스 경로, `?mode=prototype`은 v0.16 비교 경로입니다.
+> 세 경로의 저장은 분리됩니다. 현행 규칙과 검증 경계는 [FORK_GAMEPLAY.md](FORK_GAMEPLAY.md),
+> [FORK_QA.md](FORK_QA.md), [INTEGRATION_DESIGN.md](INTEGRATION_DESIGN.md)를 기준으로 합니다.
+
 # Little Token
+
+빌드 후 `플레이.cmd`를 더블클릭하면 현재 통합판을 연다. 개발은 `npm ci` → `npm run dev`.
+
+아래 화면과 기존 시스템 소개는 비교용 원본 `?mode=classic` 기준이다.
 
 ![Little Token 타이틀 화면](docs/images/01-title.jpg)
 

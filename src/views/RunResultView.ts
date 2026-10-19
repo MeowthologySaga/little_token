@@ -23,6 +23,7 @@ import { discoveredComboIds } from '@core/comboDiscovery'
 export type RunOutcome = 'lost' | 'won'
 
 interface Opts {
+  conceptSummary?: string
   outcome: RunOutcome
   /** 몇 일째에 끝났는지. */
   day: number
@@ -145,6 +146,7 @@ export class RunResultView {
                 : outcome === 'lost' ? '에서 멈췄다' : '까지 써 냈다'}</div>
             </div>
 
+            ${this.opts.conceptSummary ? `<p class="result-concepts">${this.opts.conceptSummary}</p>` : ''}
             ${this.causeHtml()}
             ${this.opts.demoComplete ? this.demoDiscoveriesHtml(player) : ''}
 

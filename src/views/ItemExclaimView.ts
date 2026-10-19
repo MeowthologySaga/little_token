@@ -1,3 +1,4 @@
+import type { ItemForgeCheckpoint } from '@core/itemForge'
 /**
  * 아이템 제련 뷰 — 감탄 문장을 망치질하듯 완성하는 전투와 같은 패턴.
  *  · 상단: 제련 문장이 점차 완성되는 체인
@@ -17,6 +18,8 @@ import { spawnCardCommitBurst } from '@/ui/CardCommitBurst'
 import { GameAudio } from '@/audio/GameAudio'
 
 interface Opts {
+  checkpoint?: ItemForgeCheckpoint
+  onCheckpoint?: (checkpoint: ItemForgeCheckpoint) => void
   item: ItemDef
   /** 전투에서 들고 온 보상등급 — 높을수록 행운 감탄(팅! 추가 스탯)이 잘 붙는다. */
   grade?: number
@@ -61,7 +64,18 @@ export class ItemExclaimView {
         if (Math.random() < chance) {
           this.blessed.set(`${slot.key}:${w.id}`, ITEM_BLESS_POOL[Math.floor(Math.random() * ITEM_BLESS_POOL.length)])
         }
+    if (opts.checkpoint) {
+      const c = structuredClone(opts.checkpoint)
+      this.picks = c.picks; this.slotIndex = c.slotIndex; this.rarityMultipliers = c.multipliers
+      this.choices = c.choices; this.blessed = new Map(c.blessed)
+    }
+    this.checkpoint()
     this.mount()
+    if (this.complete()) this.finalize()
+  }
+  private checkpoint() {
+    this.opts.onCheckpoint?.(structuredClone({ picks: this.picks, slotIndex: this.slotIndex,
+      multipliers: this.rarityMultipliers, choices: this.choices, blessed: [...this.blessed] }))
   }
   destroy() {
     this.timers.forEach((t) => clearTimeout(t))
@@ -390,6 +404,7 @@ export class ItemExclaimView {
           let next = this.slotIndex + 1
           while (next < EXCLAIM_SLOTS.length && this.picks[EXCLAIM_SLOTS[next].key]) next++
           this.slotIndex = Math.min(next, EXCLAIM_SLOTS.length - 1)
+          this.checkpoint()
           this.refresh()
           // 전부 고르면 단어 선택처럼 자동 확정
           if (this.complete()) this.finalize()

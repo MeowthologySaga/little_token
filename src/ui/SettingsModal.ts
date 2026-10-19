@@ -14,7 +14,7 @@ import { currentLocale, LOCALE_NAMES, setLocale, SUPPORTED_LOCALES, t, type Loca
 type SettingsTab = 'graphics' | 'sound' | 'other'
 
 /** 전투와 타이틀이 같은 저장값·마크업을 쓰는 공용 설정 모달. */
-export function openSettingsModal(root: HTMLElement, opts: { onResetAll: () => void }) {
+export function openSettingsModal(root: HTMLElement, opts: { onResetAll: () => void; resetScope?: { label: string; note: string; confirmNote: string } }) {
   const returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
   let host = root.querySelector<HTMLElement>('#overlay')
   if (!host) {
@@ -103,8 +103,8 @@ export function openSettingsModal(root: HTMLElement, opts: { onResetAll: () => v
         </div>
         <div class="settings-group records-reset-group">
           <div class="settings-label"><b>${t('playRecords', '플레이 기록')}</b><span>${t('startOver', '처음부터 다시 쓰기')}</span></div>
-          <button id="records-reset" class="settings-reset-btn" type="button">${t('resetAll', '모든 기록 삭제하고 새 게임')}</button>
-          <p id="records-reset-note" aria-live="polite">${t('resetNote', '진행 중인 일기와 튜토리얼 기록을 모두 삭제하고, 튜토리얼부터 바로 시작합니다.')}</p>
+          <button id="records-reset" class="settings-reset-btn" type="button">${(opts.resetScope?.label ?? t('resetAll', '모든 기록 삭제하고 새 게임'))}</button>
+          <p id="records-reset-note" aria-live="polite">${(opts.resetScope?.note ?? t('resetNote', '진행 중인 일기와 튜토리얼 기록을 모두 삭제하고, 튜토리얼부터 바로 시작합니다.'))}</p>
         </div>
       </div>
     </section>`
@@ -204,11 +204,11 @@ export function openSettingsModal(root: HTMLElement, opts: { onResetAll: () => v
     if (!recordsReset.classList.contains('is-danger')) {
       recordsReset.classList.add('is-danger')
       recordsReset.textContent = t('resetConfirm', '정말 모두 삭제할까요?')
-      host!.querySelector<HTMLElement>('#records-reset-note')!.textContent = t('resetConfirmNote', '한 번 더 누르면 삭제 후 새 게임을 시작합니다.')
+      host!.querySelector<HTMLElement>('#records-reset-note')!.textContent = (opts.resetScope?.confirmNote ?? t('resetConfirmNote', '한 번 더 누르면 삭제 후 새 게임을 시작합니다.'))
       resetConfirmTimer = window.setTimeout(() => {
         recordsReset.classList.remove('is-danger')
-        recordsReset.textContent = t('resetAll', '모든 기록 삭제하고 새 게임')
-        host?.querySelector<HTMLElement>('#records-reset-note')?.replaceChildren(t('resetNote', '진행 중인 일기와 튜토리얼 기록을 모두 삭제하고, 튜토리얼부터 바로 시작합니다.'))
+        recordsReset.textContent = (opts.resetScope?.label ?? t('resetAll', '모든 기록 삭제하고 새 게임'))
+        host?.querySelector<HTMLElement>('#records-reset-note')?.replaceChildren((opts.resetScope?.note ?? t('resetNote', '진행 중인 일기와 튜토리얼 기록을 모두 삭제하고, 튜토리얼부터 바로 시작합니다.')))
       }, 3400)
       return
     }

@@ -7,6 +7,7 @@ artifacts
 *.log
 *.err
 screenshots
+steering-player-server.json
 
 # 영상 원본(mp4) — 저장소에는 구운 webm만 넣는다. 원본은 수십 MB라 히스토리에 남기지 않는다.
 src/assets/video/*.mp4
