@@ -17,3 +17,4 @@ src/assets/video/*.mp4
 
 # 일회용 연출 녹화 스크립트 (로컬 전용)
 .record-heavy.mjs
+.vercel
