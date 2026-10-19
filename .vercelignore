@@ -1,0 +1,8 @@
+.env*
+output/**
+Temp/**
+*.log
+*.err
+steering-player-server.json
+dist/
+dist-demo/
